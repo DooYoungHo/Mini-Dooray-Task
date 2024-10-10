@@ -1,4 +1,4 @@
-package com.nhnacademy.project.entity;
+package com.nhnacademy.taskapi.entity;
 
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.nhnacademy.project.entity;
+package com.nhnacademy.taskapi.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
-
 import java.time.LocalDateTime;
 
 @Entity
