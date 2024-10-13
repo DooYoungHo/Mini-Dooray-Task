@@ -1,4 +1,4 @@
-package com.nhnacademy.taskapi.user;
+package com.nhnacademy.taskapi.user.service;
 
 
 import com.nhnacademy.taskapi.entity.user.User;
@@ -16,9 +16,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ActiveProfiles("dev")
 @ExtendWith(MockitoExtension.class)
@@ -53,15 +55,44 @@ public class UserServiceTest {
     @Test
     @DisplayName("Delete User")
     void deleteUser() {
-        UserRequest userRequest = new UserRequest("testId");
+        String userId = "testId2";
 
-        when(userRepository.existsById("testId")).thenReturn(false);
-        when(userRepository.save(any(User.class))).thenReturn(new User("testId"));
+        User user = new User(userId);
 
+        when(userRepository.existsById(userId)).thenReturn(false);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        UserRequest userRequest = new UserRequest(userId);
         userService.save(userRequest);
 
-        userService.delete("testId");
+        when(userRepository.existsById(userId)).thenReturn(true);
 
-        assertNull(userService.getUser("testId"));
+        doNothing().when(projectMemberRepository).deleteByUserId(userId);
+        doNothing().when(projectRepository).deleteByUserId(userId);
+
+        userService.delete(userId);
+
+        verify(userRepository, times(2)).existsById(userId);
+        verify(projectMemberRepository, times(1)).deleteByUserId(userId);
+        verify(projectRepository, times(1)).deleteByUserId(userId);
+    }
+
+    @Test
+    @DisplayName("Get User")
+    void getUser() {
+
+        // given
+        String userId = "existingUser";
+        User user = new User(userId);
+        when(userRepository.existsById(userId)).thenReturn(true);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        // when
+        UserDto result = userService.getUser(userId);
+
+        // then
+        assertNotNull(result);
+        assertEquals(userId, result.getUserId());
+        verify(userRepository).findById(userId);
     }
 }

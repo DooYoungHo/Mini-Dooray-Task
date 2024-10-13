@@ -1,4 +1,4 @@
-package com.nhnacademy.taskapi.user;
+package com.nhnacademy.taskapi.user.repo;
 
 
 import com.nhnacademy.taskapi.entity.user.User;

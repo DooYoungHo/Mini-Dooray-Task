@@ -66,9 +66,9 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        if (!projectMemberRepository.existsByUserId(userId)) {
-            throw new ProjectMemberUserNotFoundException(userId);
-        }
+//        if (!projectMemberRepository.existsByUserId(userId)) {
+//            throw new ProjectMemberUserNotFoundException(userId);
+//        }
 
         List<Project> projectList = projectMemberRepository.findProjectParticipationByUserId(userId);
 
