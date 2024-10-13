@@ -15,19 +15,19 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/users")              /* 유저 등록하기 */
+    @PostMapping("/user")              /* 유저 등록하기 */
     public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest) {
         UserDto userDto = userService.save(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
-    @DeleteMapping("/users")           /* 유저 삭제하기 */
-    public ResponseEntity<?> deleteUser(@RequestHeader("X-USER-ID") String userId) {
+    @DeleteMapping("/user/{userId}")           /* 유저 삭제하기 */
+    public ResponseEntity<?> deleteUser(@PathVariable("userId") String userId) {
         userService.delete(userId);
         return ResponseEntity.ok().body(null);
     }
 
-    @GetMapping("/users/{userId}")              /* 유저 조회 */
+    @GetMapping("/user/{userId}")              /* 유저 조회 */
     public ResponseEntity<UserDto> getUser(@PathVariable("userId") String userId) {
         UserDto userDto = userService.getUser(userId);
         return ResponseEntity.ok().body(userDto);
