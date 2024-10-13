@@ -4,6 +4,7 @@ import com.nhnacademy.taskapi.entity.project.Project;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,8 +26,7 @@ public class MileStone {
             length = 100)
     private String title;
 
-
-
+    @Setter
     private LocalDate initDate;
 
     @Setter

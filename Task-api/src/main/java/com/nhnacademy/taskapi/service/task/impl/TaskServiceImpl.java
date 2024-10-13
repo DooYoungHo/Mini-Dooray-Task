@@ -5,7 +5,7 @@ import com.nhnacademy.taskapi.dto.task.TaskDetailResponseDto;
 import com.nhnacademy.taskapi.dto.task.TaskSimpleResponseDto;
 import com.nhnacademy.taskapi.entity.project.Project;
 import com.nhnacademy.taskapi.entity.task.Task;
-import com.nhnacademy.taskapi.repository.ProjectRepository;
+import com.nhnacademy.taskapi.repository.project.ProjectRepository;
 import com.nhnacademy.taskapi.repository.task.TaskRepository;
 import com.nhnacademy.taskapi.service.task.TaskService;
 import jakarta.transaction.Transactional;
