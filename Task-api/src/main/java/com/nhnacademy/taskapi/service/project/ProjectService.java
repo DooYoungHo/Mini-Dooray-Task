@@ -31,7 +31,7 @@ public interface ProjectService {
 
     Project getProjectById(Long projectId);
 
-    Project create(String title, ProjectStatus projectStatus, String userId);
+    Project create(String title, String userId);
 
     void delete(Long projectId, String userId);
 

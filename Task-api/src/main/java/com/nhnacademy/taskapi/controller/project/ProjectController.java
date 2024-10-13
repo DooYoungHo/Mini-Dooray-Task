@@ -1,6 +1,7 @@
 package com.nhnacademy.taskapi.controller.project;
 
 import com.nhnacademy.taskapi.entity.project.Project;
+import com.nhnacademy.taskapi.entity.project.request.ProjectCreateRequest;
 import com.nhnacademy.taskapi.entity.project.request.ProjectRequest;
 import com.nhnacademy.taskapi.service.project.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,9 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")       /* 특정 프로젝트 생성 */
-    public ResponseEntity<Project> createProject(@RequestBody ProjectRequest projectRequest,
+    public ResponseEntity<Project> createProject(@RequestBody ProjectCreateRequest projectCreateRequest,
                                                  @RequestHeader("X-USER-ID") String userId) {
-        Project project = projectService.create(projectRequest.getTitle(), projectRequest.getStatus(), userId);
+        Project project = projectService.create(projectCreateRequest.getTitle(), userId);
         return ResponseEntity.ok(project);
     }
 

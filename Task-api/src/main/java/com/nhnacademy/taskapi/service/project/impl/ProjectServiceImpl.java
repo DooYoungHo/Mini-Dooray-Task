@@ -157,9 +157,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project create(String title, ProjectStatus projectStatus, String userId) {
+    public Project create(String title, String userId) {
 
-        if (Objects.isNull(userId) || Objects.isNull(title) || Objects.isNull(projectStatus)
+        if (Objects.isNull(userId) || Objects.isNull(title)
         || title.isEmpty() || userId.isEmpty()) {
             throw new IllegalArgumentException("옳바르지 않은 값이 들어왔습니다 - 프로젝트 생성");
         }
@@ -169,7 +169,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         User addUser = new User(userId);
-        Project project = projectRepository.save(new Project(title, projectStatus, addUser));
+        Project project = projectRepository.save(new Project(title, ProjectStatus.ACTIVE, addUser));
 
         projectMemberRepository.save(
                 new ProjectMember(project, addUser)
