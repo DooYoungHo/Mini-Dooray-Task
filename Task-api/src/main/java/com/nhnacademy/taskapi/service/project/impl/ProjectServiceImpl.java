@@ -78,7 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectDto> getAllActiveProjectsByUser(String userId) {
         if (Objects.isNull(userId) || userId.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("유저 아이디가 비어있거나 올바르지 않습니다.");
         }
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException(userId);
@@ -97,7 +97,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectDto> getAllInactiveProjectsByUser(String userId) {
         if (Objects.isNull(userId) || userId.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("유저 아이디가 비어있거나 올바르지 않습니다.");
         }
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException(userId);
@@ -116,7 +116,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectDto> getAllTerminatedProjectsByUser(String userId) {
         if (Objects.isNull(userId) || userId.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("유저 아이디가 비어있거나 올바르지 않습니다.");
         }
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException(userId);
@@ -152,7 +152,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project getProjectById(Long projectId) {
         return projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException("Project(id = " + projectId + ") not found."));
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
     }
 
     @Override
@@ -170,7 +170,6 @@ public class ProjectServiceImpl implements ProjectService {
         User addUser = new User(userId);
         Project project = projectRepository.save(new Project(title, projectStatus, addUser));
 
-        //TODO : 프로젝트 생성할 때 관리자를 같이 프로젝트 멤버에 넣어줘야함
         projectMemberRepository.save(
                 new ProjectMember(project, addUser)
         );
@@ -181,7 +180,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void delete(Long projectId) {
         if (Objects.isNull(projectId) || projectId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("프로젝트 아이디 값이 올바르지 않습니다.");
         }
         if (!projectRepository.existsById(projectId)) {
             throw new ProjectNotFoundException();
@@ -199,7 +198,7 @@ public class ProjectServiceImpl implements ProjectService {
     public void update(Long projectId, String title, ProjectStatus status, String userId) {
         if (Objects.isNull(projectId) || Objects.isNull(status) || Objects.isNull(title)
                 || Objects.isNull(userId) || userId.isEmpty() || title.isEmpty() || projectId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("프로젝트에 필요한 값들이 올바르지 않습니다.");
         }
         if (!projectRepository.existsById(projectId)) {
             throw new ProjectNotFoundException();
@@ -221,7 +220,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public UserDto getCreateUserByProjectId(Long projectId) {
         if (Objects.isNull(projectId) || projectId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("프로젝트 아이디 값이 올바르지 않습니다.");
         }
 
         if (!projectRepository.existsById(projectId)) {

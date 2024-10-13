@@ -42,7 +42,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<TagDto> getAllTagsByProjectId(Long projectId) {
         if (Objects.isNull(projectId) || projectId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("태그 - 프로젝트 아이디가 옳바르지 않은 값입니다.");
         }
 
         List<Tag> tagList = tagRepository.findAllByProjectId(projectId);
@@ -58,10 +58,10 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto getTag(Long tagId) {
         if (Objects.isNull(tagId) || tagId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("태그 아이디 값이 올바르지 않습니다.");
         }
         if (!tagRepository.existsById(tagId)) {
-            throw new TagNotFoundException();
+            throw new TagNotFoundException(tagId);
         }
 
         Tag tag = tagRepository.findById(tagId)
@@ -73,7 +73,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto create(String content, Long projectId) {
         if (Objects.isNull(content) || Objects.isNull(projectId) || content.isEmpty() || projectId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("제목 또는 프로젝트 아이디가 올바르지 않은 값입니다.");
         }
         if (tagRepository.existsTagByContent(content)) {
             throw new TagAlreadyExistsException();
@@ -90,7 +90,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public void update(Long tagId, TagRequest tagRequest) {
         if (Objects.isNull(tagId) || Objects.isNull(tagRequest) || tagId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("태그 아이디에 올바르지 않은 값이 들어왔습니다.");
         }
         if (!tagRepository.existsById(tagId)) {
             throw new TagNotFoundException(tagId);
@@ -109,7 +109,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public void delete(Long tagId) {
         if (Objects.isNull(tagId) || tagId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("태그 아이디에 올바르지 않은 값이 들어왔습니다.");
         }
         if (!tagRepository.existsById(tagId)) {
             throw new TagNotFoundException(tagId);
