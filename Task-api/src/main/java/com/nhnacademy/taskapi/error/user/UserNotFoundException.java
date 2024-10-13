@@ -1,6 +1,8 @@
 package com.nhnacademy.taskapi.error.user;
 
-public class UserNotFoundException extends RuntimeException {
+import com.nhnacademy.taskapi.error.NotFoundException;
+
+public class UserNotFoundException extends NotFoundException {
 
     public UserNotFoundException() {
         super("유저를 찾을 수 없습니다.");

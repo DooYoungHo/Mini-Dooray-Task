@@ -43,7 +43,7 @@ public class MileStoneServiceImpl implements MileStoneService {
     @Override
     public MileStoneDto create(String title, LocalDate initDate, LocalDate dueDate, Long projectId) {
         if (Objects.isNull(title) || Objects.isNull(projectId) || title.isEmpty() || projectId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("마일스톤에 필요한 값이 올바르지 않습니다.");
         }
 
         if (mileStoneRepository.existsByTitle(title)) {
@@ -61,7 +61,7 @@ public class MileStoneServiceImpl implements MileStoneService {
     @Override
     public void delete(Long mileStoneId) {
         if (Objects.isNull(mileStoneId) || mileStoneId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("마일스톤 값이 올바르지 않습니다.");
         }
         if (!mileStoneRepository.existsById(mileStoneId)) {
             throw new MileStoneNotFoundException();
@@ -74,7 +74,7 @@ public class MileStoneServiceImpl implements MileStoneService {
     @Override
     public MileStoneDto update(Long mileStoneId, MileStoneRequest request) {
         if (Objects.isNull(mileStoneId) || mileStoneId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("마일스톤 값이 올바르지 않습니다.");
         }
         if (!mileStoneRepository.existsById(mileStoneId)) {
             throw new MileStoneNotFoundException();
@@ -102,7 +102,7 @@ public class MileStoneServiceImpl implements MileStoneService {
     @Override
     public MileStoneDto getByMileStoneId(Long mileStoneId) {
         if (Objects.isNull(mileStoneId) || mileStoneId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("마일스톤 값이 올바르지 않습니다.");
         }
         if (!mileStoneRepository.existsById(mileStoneId)) {
             throw new MileStoneNotFoundException();

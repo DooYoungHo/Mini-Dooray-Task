@@ -32,7 +32,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Override
     public ProjectMemberDto addMemberToProject(String ownerId, Long projectId, String userId) {
         if (Objects.isNull(userId) || Objects.isNull(projectId) || Objects.isNull(ownerId) || ownerId.isEmpty() || userId.isEmpty() || projectId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("프로젝트멤버 - 들어온 데이터 값이 올바르지 않습니다.");
         }
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
@@ -61,7 +61,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Override
     public List<Project> getProjectsByUserId(String userId) {
         if (Objects.isNull(userId) || userId.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("유저 아이디 값이 올바르지 않습니다.");
         }
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
@@ -76,7 +76,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Override
     public List<User> getMembersByProjectId(Long projectId) {
         if (Objects.isNull(projectId) || projectId <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("프로젝트 아이디 값이 올바르지 않습니다.");
         }
         if (!projectRepository.existsById(projectId)) {
             throw new ProjectNotFoundException();

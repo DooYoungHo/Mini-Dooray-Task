@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
 
         String userId = userRequest.getUserId();
 
-        if (Objects.isNull(userId) || userId.isEmpty()) {
-            throw new IllegalArgumentException();
+        if (Objects.isNull(userId) || userId.trim().isEmpty()) {
+            throw new IllegalArgumentException("유저 아이디에 올바르지 않은 값이 들어왔습니다.");
         }
         if (userRepository.existsById(userId)) {
             throw new UserAlreadyExistsException(userId);
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String userId) {
         if (Objects.isNull(userId) || userId.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("유저 아이디에 올바르지 않은 값이 들어왔습니다.");
         }
 
         if (!userRepository.existsById(userId)) {
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUser(String userId) {
         if (Objects.isNull(userId) || userId.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("유저 아이디에 올바르지 않은 값이 들어왔습니다.");
         }
 
         if (!userRepository.existsById(userId)) {

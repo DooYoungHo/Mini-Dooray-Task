@@ -1,6 +1,8 @@
 package com.nhnacademy.taskapi.error.tag;
 
-public class TagAlreadyExistsException extends RuntimeException {
+import com.nhnacademy.taskapi.error.AlreadyExistException;
+
+public class TagAlreadyExistsException extends AlreadyExistException {
 
     public TagAlreadyExistsException() {
         super("이미 존재하는 태그입니다.");
