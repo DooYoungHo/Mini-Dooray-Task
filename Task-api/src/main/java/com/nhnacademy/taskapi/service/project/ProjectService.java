@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ProjectService {
 
-    List<Project> getAllProjects();
+    List<ProjectDto> getAllProjects();
 
     List<ProjectDto> getAllActiveProjects();
 
@@ -25,13 +25,13 @@ public interface ProjectService {
 
     List<ProjectDto> getAllTerminatedProjectsByUser(String userId);
 
-    List<Project> getProjectsByUserId(String userId);
+    List<ProjectDto> getProjectsByUserId(String userId);
 
-    Page<Project> getProjectsPage(Pageable pageable);
+    Page<ProjectDto> getProjectsPage(Pageable pageable);
 
-    Project getProjectById(Long projectId);
+    ProjectDto getProjectById(Long projectId);
 
-    Project create(String title, String userId);
+    ProjectDto create(String title, String userId);
 
     void delete(Long projectId, String userId);
 

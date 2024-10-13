@@ -1,6 +1,7 @@
 package com.nhnacademy.taskapi.service.projectmember.impl;
 
 import com.nhnacademy.taskapi.entity.project.Project;
+import com.nhnacademy.taskapi.entity.project.dto.ProjectDto;
 import com.nhnacademy.taskapi.entity.projectmember.ProjectMember;
 import com.nhnacademy.taskapi.entity.projectmember.dto.ProjectMemberDto;
 import com.nhnacademy.taskapi.entity.user.User;
@@ -16,6 +17,7 @@ import com.nhnacademy.taskapi.service.projectmember.ProjectMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,7 +59,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public List<Project> getProjectsByUserId(String userId) {
+    public List<ProjectDto> getProjectsByUserId(String userId) {
         if (Objects.isNull(userId) || userId.isEmpty()) {
             throw new IllegalArgumentException("유저 아이디 값이 올바르지 않습니다.");
         }
@@ -68,7 +70,20 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
             throw new ProjectMemberUserNotFoundException(userId);
         }
 
-        return projectMemberRepository.findProjectParticipationByUserId(userId);
+        List<Project> projectList = projectMemberRepository.findProjectParticipationByUserId(userId);
+
+        List<ProjectDto> projectDtoList = new ArrayList<>();
+        for (Project project : projectList) {
+            projectDtoList.add(
+                    new ProjectDto(
+                            project.getProjectId(),
+                            project.getTitle(),
+                            project.getStatus()
+                    )
+            );
+        }
+
+        return projectDtoList;
     }
 
     @Override

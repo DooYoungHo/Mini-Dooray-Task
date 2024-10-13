@@ -8,10 +8,12 @@ import lombok.Setter;
 @Setter
 public class ProjectDto {
 
+    private long projectId;
     private String title;
     private ProjectStatus status;
 
-    public ProjectDto(String title, ProjectStatus status) {
+    public ProjectDto(long projectId, String title, ProjectStatus status) {
+        this.projectId = projectId;
         this.title = title;
         this.status = status;
     }

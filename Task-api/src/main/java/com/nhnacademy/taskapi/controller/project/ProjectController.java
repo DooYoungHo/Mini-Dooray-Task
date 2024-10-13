@@ -1,6 +1,7 @@
 package com.nhnacademy.taskapi.controller.project;
 
 import com.nhnacademy.taskapi.entity.project.Project;
+import com.nhnacademy.taskapi.entity.project.dto.ProjectDto;
 import com.nhnacademy.taskapi.entity.project.request.ProjectCreateRequest;
 import com.nhnacademy.taskapi.entity.project.request.ProjectRequest;
 import com.nhnacademy.taskapi.service.project.ProjectService;
@@ -33,19 +34,19 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")       /* 특정 프로젝트 생성 */
-    public ResponseEntity<Project> createProject(@RequestBody ProjectCreateRequest projectCreateRequest,
+    public ResponseEntity<ProjectDto> createProject(@RequestBody ProjectCreateRequest projectCreateRequest,
                                                  @RequestHeader("X-USER-ID") String userId) {
-        Project project = projectService.create(projectCreateRequest.getTitle(), userId);
+        ProjectDto project = projectService.create(projectCreateRequest.getTitle(), userId);
         return ResponseEntity.ok(project);
     }
 
     @GetMapping("/projects/{projectId}") /* 특정 프로젝트 조회 */
-    public ResponseEntity<Project> getProject(@PathVariable("projectId") Long id) {
+    public ResponseEntity<ProjectDto> getProject(@PathVariable("projectId") Long id) {
         return ResponseEntity.ok(projectService.getProjectById(id));
     }
 
     @GetMapping("/projects/user") /* 특정 유저가 만든 프로젝트 목록 조회 */
-    public ResponseEntity<List<Project>> getProjectsByUserId(@RequestHeader("X-USER-ID") String userId) {
+    public ResponseEntity<List<ProjectDto>> getProjectsByUserId(@RequestHeader("X-USER-ID") String userId) {
         return ResponseEntity.ok(projectService.getProjectsByUserId(userId));
     }
 

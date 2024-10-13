@@ -2,6 +2,7 @@ package com.nhnacademy.taskapi.controller.projectmember;
 
 
 import com.nhnacademy.taskapi.entity.project.Project;
+import com.nhnacademy.taskapi.entity.project.dto.ProjectDto;
 import com.nhnacademy.taskapi.entity.projectmember.dto.ProjectMemberDto;
 import com.nhnacademy.taskapi.entity.projectmember.request.ProjectMemberRequest;
 import com.nhnacademy.taskapi.entity.user.User;
@@ -32,7 +33,7 @@ public class ProjectMemberController {
     }
 
     @GetMapping("/users/{userId}/projects")
-    public ResponseEntity<List<Project>> getProjectsByUser(@PathVariable("userId") String userId) {
+    public ResponseEntity<List<ProjectDto>> getProjectsByUser(@PathVariable("userId") String userId) {
         return ResponseEntity.ok().body(projectMemberService.getProjectsByUserId(userId));
     }
 

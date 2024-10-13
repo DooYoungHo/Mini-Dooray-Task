@@ -1,5 +1,5 @@
 ### 특정 유저가 참여한 모든 프로젝트 보기
-GET http://localhost:8080/api/users/GGyu/projects
+GET http://localhost:8080/api/users/jungGyu/projects
 
 ### 특정 프로젝트에 참여한 모든 멤버 보기
 GET http://localhost:8080/api/projects/9/users

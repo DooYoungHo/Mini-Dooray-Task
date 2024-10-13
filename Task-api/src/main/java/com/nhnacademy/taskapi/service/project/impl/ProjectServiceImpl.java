@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,10 +35,20 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectMemberRepository projectMemberRepository;
 
     @Override
-    public List<Project> getAllProjects() {
+    public List<ProjectDto> getAllProjects() {
         List<Project> projects = projectRepository.findAllBy();
 
-        return projects.isEmpty() ? new ArrayList<>() : projects;
+        List<ProjectDto> projectDtoList = new ArrayList<>();
+        for (Project project : projects) {
+            projectDtoList.add(
+                    new ProjectDto(
+                            project.getProjectId(),
+                            project.getTitle(),
+                            project.getStatus())
+            );
+        }
+
+        return projectDtoList;
     }
 
     @Override
@@ -46,7 +57,10 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ProjectDto> projectDtoList = new ArrayList<>();
         for (Project project : projectList) {
-            projectDtoList.add(new ProjectDto(project.getTitle(), project.getStatus()));
+            projectDtoList.add(new ProjectDto(
+                    project.getProjectId(),
+                    project.getTitle(),
+                    project.getStatus()));
         }
 
         return projectDtoList;
@@ -58,7 +72,10 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ProjectDto> projectDtoList = new ArrayList<>();
         for (Project project : projectList) {
-            projectDtoList.add(new ProjectDto(project.getTitle(), project.getStatus()));
+            projectDtoList.add(new ProjectDto(
+                    project.getProjectId(),
+                    project.getTitle(),
+                    project.getStatus()));
         }
 
         return projectDtoList;
@@ -70,7 +87,10 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ProjectDto> projectDtoList = new ArrayList<>();
         for (Project project : projectList) {
-            projectDtoList.add(new ProjectDto(project.getTitle(), project.getStatus()));
+            projectDtoList.add(new ProjectDto(
+                    project.getProjectId(),
+                    project.getTitle(),
+                    project.getStatus()));
         }
 
         return projectDtoList;
@@ -89,7 +109,10 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ProjectDto> projectDtoList = new ArrayList<>();
         for (Project project : projectList) {
-            projectDtoList.add(new ProjectDto(project.getTitle(), project.getStatus()));
+            projectDtoList.add(new ProjectDto(
+                    project.getProjectId(),
+                    project.getTitle(),
+                    project.getStatus()));
         }
 
         return projectDtoList;
@@ -108,7 +131,10 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ProjectDto> projectDtoList = new ArrayList<>();
         for (Project project : projectList) {
-            projectDtoList.add(new ProjectDto(project.getTitle(), project.getStatus()));
+            projectDtoList.add(new ProjectDto(
+                    project.getProjectId(),
+                    project.getTitle(),
+                    project.getStatus()));
         }
 
         return projectDtoList;
@@ -127,37 +153,60 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ProjectDto> projectDtoList = new ArrayList<>();
         for (Project project : projectList) {
-            projectDtoList.add(new ProjectDto(project.getTitle(), project.getStatus()));
+            projectDtoList.add(new ProjectDto(
+                    project.getProjectId(),
+                    project.getTitle(),
+                    project.getStatus()));
         }
 
         return projectDtoList;
     }
 
     @Override
-    public List<Project> getProjectsByUserId(String userId) {
+    public List<ProjectDto> getProjectsByUserId(String userId) {
         if (Objects.isNull(userId) || userId.isEmpty()) {
             throw new IllegalArgumentException("유저 아이디가 비어있거나 Null 입니다.");
         }
         List<Project> projectList = projectRepository.findProjectsByUserId(userId);
 
-        return projectList.isEmpty() ? new ArrayList<>() : projectList;
+        List<ProjectDto> projectDtoList = new ArrayList<>();
+        for (Project project : projectList) {
+            projectDtoList.add(new ProjectDto(
+                    project.getProjectId(),
+                    project.getTitle(),
+                    project.getStatus()));
+        }
+
+        return projectDtoList;
     }
 
     @Override
-    public Page<Project> getProjectsPage(Pageable pageable) {
+    public Page<ProjectDto> getProjectsPage(Pageable pageable) {
         Page<Project> projectPage = projectRepository.findAll(pageable);
 
-        return projectPage.isEmpty() ? new PageImpl<>(Collections.emptyList(), pageable, 0) : projectPage;
+        List<ProjectDto> projectDtoList = projectPage.getContent().stream()
+                .map(project -> new ProjectDto(
+                        project.getProjectId(),
+                        project.getTitle(),
+                        project.getStatus()))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(projectDtoList, pageable, projectPage.getTotalElements());
     }
 
     @Override
-    public Project getProjectById(Long projectId) {
-        return projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+    public ProjectDto getProjectById(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+
+        return new ProjectDto(
+                project.getProjectId(),
+                project.getTitle(),
+                project.getStatus());
     }
 
     @Override
-    public Project create(String title, String userId) {
+    public ProjectDto create(String title, String userId) {
 
         if (Objects.isNull(userId) || Objects.isNull(title)
         || title.isEmpty() || userId.isEmpty()) {
@@ -175,7 +224,11 @@ public class ProjectServiceImpl implements ProjectService {
                 new ProjectMember(project, addUser)
         );
 
-        return project;
+        return new ProjectDto(
+                project.getProjectId(),
+                project.getTitle(),
+                project.getStatus()
+        );
     }
 
     @Override

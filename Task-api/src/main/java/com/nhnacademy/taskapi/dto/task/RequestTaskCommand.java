@@ -20,10 +20,10 @@ public class RequestTaskCommand {
 
     private long projectId;
 
-    private String  milestoneId;
+    private long milestoneId;
 
     public Task toEntity(Project project) {
-        return new Task(title, content, project);
+        return new Task(title, content, project, milestoneId);
     }
 
 }
