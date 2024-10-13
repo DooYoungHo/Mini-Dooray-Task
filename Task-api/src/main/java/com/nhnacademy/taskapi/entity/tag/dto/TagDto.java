@@ -7,9 +7,13 @@ import lombok.Setter;
 @Setter
 public class TagDto {
 
+    private long tagId;
+
     private String content;
 
-    public TagDto() {
+    public TagDto(long tagId, String content) {
+        this.tagId = tagId;
+        this.content = content;
 
     }
 

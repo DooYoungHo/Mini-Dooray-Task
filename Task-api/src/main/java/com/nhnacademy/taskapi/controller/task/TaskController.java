@@ -1,8 +1,8 @@
 package com.nhnacademy.taskapi.controller.task;
 
-import com.nhnacademy.taskapi.dto.task.RequestTaskCommand;
-import com.nhnacademy.taskapi.dto.task.TaskDetailResponseDto;
-import com.nhnacademy.taskapi.dto.task.TaskSimpleResponseDto;
+import com.nhnacademy.taskapi.entity.task.dto.RequestTaskCommand;
+import com.nhnacademy.taskapi.entity.task.dto.TaskDetailResponseDto;
+import com.nhnacademy.taskapi.entity.task.dto.TaskSimpleResponseDto;
 import com.nhnacademy.taskapi.entity.task.Task;
 import com.nhnacademy.taskapi.service.task.TaskService;
 
@@ -42,7 +42,7 @@ public class TaskController {
 
     @Operation(summary = "Task ID로 Task 조회", description = "Task ID에 해당하는 Task 정보를 조회합니다.")
     @GetMapping("/tasks/{taskId}")
-    public ResponseEntity<TaskDetailResponseDto> getTaskById(@PathVariable Long taskId) {
+    public ResponseEntity<TaskDetailResponseDto> getTaskById(@PathVariable long taskId) {
 
         TaskDetailResponseDto task = taskService.getTaskById(taskId);
 

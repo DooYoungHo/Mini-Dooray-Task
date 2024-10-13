@@ -1,10 +1,13 @@
 package com.nhnacademy.taskapi.entity.tag;
 
 import com.nhnacademy.taskapi.entity.project.Project;
+import com.nhnacademy.taskapi.entity.tag.dto.TagDto;
+import com.nhnacademy.taskapi.entity.taskTag.TaskTag;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -32,10 +35,16 @@ public class Tag {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<TaskTag> taskTags;
+
     public Tag(String content, Project project) {
         this.content = content;
         this.createdAt = LocalDateTime.now();
         this.project = project;
+    }
+    public TagDto toDto() {
+        return new TagDto(tagId, content);
     }
 
 }

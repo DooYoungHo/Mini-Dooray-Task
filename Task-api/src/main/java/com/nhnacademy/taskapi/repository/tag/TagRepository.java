@@ -14,6 +14,8 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     @Query("SELECT t FROM Tag t WHERE t.project.projectId = :projectId")
     List<Tag> findAllByProjectId(Long projectId);
 
+
+    Tag findById(long id);
     // 태그 제목 존재하는 지 확인
     boolean existsTagByContent(String content);
 
