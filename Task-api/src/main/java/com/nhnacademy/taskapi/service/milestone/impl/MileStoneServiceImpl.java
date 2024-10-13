@@ -1,0 +1,131 @@
+package com.nhnacademy.taskapi.service.milestone.impl;
+
+import com.nhnacademy.taskapi.entity.milestone.MileStone;
+import com.nhnacademy.taskapi.entity.project.Project;
+import com.nhnacademy.taskapi.entity.milestone.dto.MileStoneDto;
+import com.nhnacademy.taskapi.entity.milestone.request.MileStoneRequest;
+import com.nhnacademy.taskapi.error.milestone.MileStoneAlreadyExistsException;
+import com.nhnacademy.taskapi.error.milestone.MileStoneNotFoundException;
+import com.nhnacademy.taskapi.error.project.ProjectNotFoundException;
+import com.nhnacademy.taskapi.repository.milestone.MileStoneRepository;
+import com.nhnacademy.taskapi.repository.project.ProjectRepository;
+import com.nhnacademy.taskapi.service.milestone.MileStoneService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Service
+@RequiredArgsConstructor
+public class MileStoneServiceImpl implements MileStoneService {
+
+    private final MileStoneRepository mileStoneRepository;
+    private final ProjectRepository projectRepository;
+
+    @Override
+    public List<MileStoneDto> getAllMileStones() {
+        List<MileStone> mileStoneList = mileStoneRepository.findAll();
+
+        List<MileStoneDto> mileStoneDtoList = new ArrayList<>();
+        for (MileStone mileStone : mileStoneList) {
+
+            mileStoneDtoList.add(new MileStoneDto(mileStone.getTitle(),
+                                                    mileStone.getInitDate(),
+                                                    mileStone.getDueDate()));
+        }
+        return mileStoneDtoList;
+    }
+
+    @Override
+    public MileStoneDto create(String title, LocalDate initDate, LocalDate dueDate, Long projectId) {
+        if (Objects.isNull(title) || Objects.isNull(projectId) || title.isEmpty() || projectId <= 0) {
+            throw new IllegalArgumentException();
+        }
+
+        if (mileStoneRepository.existsByTitle(title)) {
+            throw new MileStoneAlreadyExistsException();
+        }
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+
+        mileStoneRepository.save(new MileStone(title, initDate, dueDate, project));
+
+        return new MileStoneDto(title, initDate, dueDate);
+    }
+
+    @Override
+    public void delete(Long mileStoneId) {
+        if (Objects.isNull(mileStoneId) || mileStoneId <= 0) {
+            throw new IllegalArgumentException();
+        }
+        if (!mileStoneRepository.existsById(mileStoneId)) {
+            throw new MileStoneNotFoundException();
+        }
+
+        mileStoneRepository.delete(mileStoneRepository.findById(mileStoneId)
+                                                        .orElseThrow(MileStoneNotFoundException::new));
+    }
+
+    @Override
+    public MileStoneDto update(Long mileStoneId, MileStoneRequest request) {
+        if (Objects.isNull(mileStoneId) || mileStoneId <= 0) {
+            throw new IllegalArgumentException();
+        }
+        if (!mileStoneRepository.existsById(mileStoneId)) {
+            throw new MileStoneNotFoundException();
+        }
+
+        MileStone mileStone = mileStoneRepository.findById(mileStoneId).orElseThrow(MileStoneNotFoundException::new);
+        mileStone.setTitle(request.getTitle());
+        mileStone.setInitDate(request.getInitDate());
+        mileStone.setDueDate(request.getDueDate());
+
+        mileStoneRepository.save(mileStone);
+
+        return getMileStoneDto(mileStone);
+    }
+
+    private static MileStoneDto getMileStoneDto(MileStone mileStone) {
+        MileStoneDto mileStoneDto;
+
+        mileStoneDto = new MileStoneDto(mileStone.getTitle(),
+                                        mileStone.getInitDate(),
+                                        mileStone.getDueDate());
+        return mileStoneDto;
+    }
+
+    @Override
+    public MileStoneDto getByMileStoneId(Long mileStoneId) {
+        if (Objects.isNull(mileStoneId) || mileStoneId <= 0) {
+            throw new IllegalArgumentException();
+        }
+        if (!mileStoneRepository.existsById(mileStoneId)) {
+            throw new MileStoneNotFoundException();
+        }
+
+        MileStone mileStone = mileStoneRepository.findById(mileStoneId).orElseThrow(MileStoneNotFoundException::new);
+
+        return getMileStoneDto(mileStone);
+    }
+
+    @Override
+    public List<MileStoneDto> getAllMieStonesByProjectId(Long projectId) {
+        List<MileStone> mileStoneList = mileStoneRepository.findAllByProjectId(projectId);
+
+        List<MileStoneDto> mileStoneDtoList = new ArrayList<>();
+        for (MileStone mileStone : mileStoneList) {
+
+            mileStoneDtoList.add(new MileStoneDto(mileStone.getTitle(),
+                                                    mileStone.getInitDate(),
+                                                    mileStone.getDueDate()));
+
+        }
+
+        return mileStoneDtoList;
+    }
+}
