@@ -1,3 +1,4 @@
+
 package com.nhnacademy.taskapi.entity.user;
 
 import com.nhnacademy.taskapi.entity.projectmember.ProjectMember;

@@ -17,6 +17,8 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "project_id")
+
     private long projectId;
 
     @Setter
@@ -45,4 +47,5 @@ public class Project {
         this.createdAt = LocalDateTime.now();
         this.user = user;
     }
+
 }

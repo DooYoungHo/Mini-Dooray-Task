@@ -22,4 +22,6 @@ public enum ProjectStatus {
         }
         throw new IllegalArgumentException("Unknown status: " + value);
     }
+
 }
+

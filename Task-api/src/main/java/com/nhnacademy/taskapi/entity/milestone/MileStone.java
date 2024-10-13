@@ -4,7 +4,6 @@ import com.nhnacademy.taskapi.entity.project.Project;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,15 +25,18 @@ public class MileStone {
             length = 100)
     private String title;
 
-    @Setter
+
+
     private LocalDate initDate;
 
     @Setter
     private LocalDate dueDate;
 
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Project project;
+
 
     public MileStone(String title, LocalDate initDate, LocalDate dueDate, Project project) {
         this.title = title;
@@ -42,4 +44,5 @@ public class MileStone {
         this.dueDate = dueDate;
         this.project = project;
     }
+
 }

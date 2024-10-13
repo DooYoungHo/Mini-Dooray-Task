@@ -16,4 +16,5 @@ public class ProjectStatusConverter implements AttributeConverter<ProjectStatus,
     public ProjectStatus convertToEntityAttribute(Integer integer) {
         return integer != null ? ProjectStatus.fromValue(integer) : null;
     }
+
 }

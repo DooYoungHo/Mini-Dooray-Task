@@ -30,4 +30,5 @@ public class ProjectMember {
         this.project = project;
         this.user = user;
     }
+
 }
