@@ -33,21 +33,24 @@ public class TagController {
     }
 
     @PostMapping("/tags")               /* 태그 생성 */
-    public ResponseEntity<TagDto> create(@RequestBody TagRequest tagRequest) {
-        TagDto tagDto = tagService.create(tagRequest.getContent(), tagRequest.getProjectId());
+    public ResponseEntity<TagDto> create(@RequestBody TagRequest tagRequest,
+                                         @RequestHeader("X-USER-ID") String userId) {
+        TagDto tagDto = tagService.create(tagRequest.getContent(), tagRequest.getProjectId(), userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(tagDto);
     }
 
     @PutMapping("/tags/{tagId}")            /* 태그 업데이트 */
     public ResponseEntity<?> update(@RequestBody TagRequest tagRequest,
-                                    @PathVariable("tagId") Long tagId) {
-        tagService.update(tagId, tagRequest);
+                                    @PathVariable("tagId") Long tagId,
+                                    @RequestHeader("X-USER-ID") String userId) {
+        tagService.update(tagId, tagRequest, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
     @DeleteMapping("/tags/{tagId}")         /* 태그 삭제 */
-    public ResponseEntity<?> delete(@PathVariable("tagId") Long tagId) {
-        tagService.delete(tagId);
+    public ResponseEntity<?> delete(@PathVariable("tagId") Long tagId,
+                                    @RequestHeader("X-USER-ID") String userId) {
+        tagService.delete(tagId, userId);
         return ResponseEntity.ok().body(null);
     }
 }

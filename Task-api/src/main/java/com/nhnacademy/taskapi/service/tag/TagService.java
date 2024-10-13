@@ -17,11 +17,11 @@ public interface TagService {
     TagDto getTag(Long tagId);
 
     // 태그 생성하기
-    TagDto create(String content, Long projectId);
+    TagDto create(String content, Long projectId, String userId);
 
     // 태그 업데이트
-    void update(Long tagId, TagRequest tagRequest);
+    void update(Long tagId, TagRequest tagRequest,String userId);
 
     // 태그 삭제하기
-    void delete(Long tagId);
+    void delete(Long tagId, String userId);
 }

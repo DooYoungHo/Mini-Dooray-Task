@@ -12,7 +12,8 @@ import java.util.List;
 
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long> {
 
-    boolean existsByUser_UserId(String userId);
+    @Query("SELECT CASE WHEN COUNT(pm) > 0 THEN TRUE ELSE FALSE END FROM ProjectMember pm WHERE pm.user.userId = :userId")
+    boolean existsByUserId(String userId);
 
     @Query("SELECT pm.project FROM ProjectMember pm WHERE pm.user.userId = :userId")
     List<Project> findProjectParticipationByUserId(String userId);

@@ -13,13 +13,13 @@ public interface MileStoneService {
     List<MileStoneDto> getAllMileStones();
 
     // 2. 마일스톤 추가
-    MileStoneDto create(String title, LocalDate initDate, LocalDate dueDate, Long projectId);
+    MileStoneDto create(String userId, String title, LocalDate initDate, LocalDate dueDate, Long projectId);
 
     // 3. 마일스톤 삭제
-    void delete(Long mileStoneId);
+    void delete(Long mileStoneId, String userId);
 
     // 4. 마일스톤 업데이트
-    MileStoneDto update(Long mileStoneId, MileStoneRequest request);
+    MileStoneDto update(Long mileStoneId, MileStoneRequest request, String userId);
 
     // 5. 특정 마일스톤 가져오기
     MileStoneDto getByMileStoneId(Long mileStoneId);

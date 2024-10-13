@@ -23,8 +23,11 @@ public class MileStoneController {
     }
 
     @PostMapping("/milestones")         /* 마일스톤 생성하기 */
-    public ResponseEntity<MileStoneDto> createMileStone(@RequestBody MileStoneRequest MileStoneRequest) {
-        MileStoneDto mileStone = mileStoneService.create(MileStoneRequest.getTitle(),
+    public ResponseEntity<MileStoneDto> createMileStone(@RequestBody MileStoneRequest MileStoneRequest,
+                                                        @RequestHeader("X-USER-ID") String userId) {
+        MileStoneDto mileStone = mileStoneService.create(
+                userId,
+                MileStoneRequest.getTitle(),
                 MileStoneRequest.getInitDate(),
                 MileStoneRequest.getDueDate(),
                 MileStoneRequest.getProjectId());
@@ -33,8 +36,9 @@ public class MileStoneController {
 
     @PutMapping("/milestones/{milestoneId}")        /* 마일스톤 업데이트 */
     public ResponseEntity<?> updateMileStone(@PathVariable("milestoneId") Long id,
-                                                        @RequestBody MileStoneRequest MileStoneRequest) {
-        mileStoneService.update(id, MileStoneRequest);
+                                             @RequestBody MileStoneRequest MileStoneRequest,
+                                             @RequestHeader("X-USER-ID")String userId) {
+        mileStoneService.update(id, MileStoneRequest, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
@@ -44,8 +48,9 @@ public class MileStoneController {
     }
 
     @DeleteMapping("/milestones/{milestoneId}")         /* 특정 마일스톤 삭제하기 */
-    public ResponseEntity<?> deleteMileStone(@PathVariable("milestoneId") Long id) {
-        mileStoneService.delete(id);
+    public ResponseEntity<?> deleteMileStone(@PathVariable("milestoneId") Long id,
+                                             @RequestHeader("X-USER-ID") String userId) {
+        mileStoneService.delete(id, userId);
         return ResponseEntity.ok().body(null);
     }
 

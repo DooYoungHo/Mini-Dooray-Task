@@ -16,10 +16,8 @@ import com.nhnacademy.taskapi.service.projectmember.ProjectMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,7 +64,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        if (!projectMemberRepository.existsByUser_UserId(userId)) {
+        if (!projectMemberRepository.existsByUserId(userId)) {
             throw new ProjectMemberUserNotFoundException(userId);
         }
 
