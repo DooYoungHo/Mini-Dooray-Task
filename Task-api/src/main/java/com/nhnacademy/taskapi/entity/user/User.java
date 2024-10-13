@@ -1,6 +1,7 @@
 
 package com.nhnacademy.taskapi.entity.user;
 
+import com.nhnacademy.taskapi.entity.comment.Comment;
 import com.nhnacademy.taskapi.entity.projectmember.ProjectMember;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -22,6 +23,10 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ProjectMember> projectMembers;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
+
 
     public User(String userId) {
         this.userId = userId;

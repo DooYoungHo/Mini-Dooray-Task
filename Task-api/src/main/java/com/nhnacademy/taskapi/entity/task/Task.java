@@ -1,12 +1,10 @@
 package com.nhnacademy.taskapi.entity.task;
 
-import com.nhnacademy.taskapi.dto.task.TaskSimpleResponseDto;
-import com.nhnacademy.taskapi.entity.Comment;
+import com.nhnacademy.taskapi.entity.comment.Comment;
 import com.nhnacademy.taskapi.entity.TaskTag;
 import com.nhnacademy.taskapi.entity.project.Project;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -30,6 +28,8 @@ public class Task {
 
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
+
+    private long milestoneId;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
