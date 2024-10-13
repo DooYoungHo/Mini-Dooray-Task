@@ -21,8 +21,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
-    @DeleteMapping("/users/{userId}")           /* 유저 삭제하기 */
-    public ResponseEntity<?> deleteUser(@PathVariable("userId") String userId) {
+    @DeleteMapping("/users")           /* 유저 삭제하기 */
+    public ResponseEntity<?> deleteUser(@RequestHeader("X-USER-ID") String userId) {
         userService.delete(userId);
         return ResponseEntity.ok().body(null);
     }

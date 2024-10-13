@@ -2,7 +2,9 @@ package com.nhnacademy.taskapi.repository.project;
 
 import com.nhnacademy.taskapi.entity.project.Project;
 import com.nhnacademy.taskapi.entity.user.User;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -60,4 +62,10 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     // 14. 특정 프로젝트의 생성자 가져오기
     @Query("SELECT p.user FROM Project p WHERE p.projectId = :projectId")
     User getUserByProjectId(Long projectId);
+
+    // 15. 프로젝트 만든 유저가 삭제되면 삭제하기
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Project p WHERE p.user.userId = :userId")
+    void deleteByUserId(String userId);
 }

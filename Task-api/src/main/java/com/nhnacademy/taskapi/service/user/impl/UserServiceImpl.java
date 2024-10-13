@@ -5,6 +5,8 @@ import com.nhnacademy.taskapi.entity.user.dto.UserDto;
 import com.nhnacademy.taskapi.entity.user.request.UserRequest;
 import com.nhnacademy.taskapi.error.user.UserAlreadyExistsException;
 import com.nhnacademy.taskapi.error.user.UserNotFoundException;
+import com.nhnacademy.taskapi.repository.project.ProjectRepository;
+import com.nhnacademy.taskapi.repository.projectmember.ProjectMemberRepository;
 import com.nhnacademy.taskapi.repository.user.UserRepository;
 import com.nhnacademy.taskapi.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectMemberRepository projectMemberRepository;
 
     @Override
     public UserDto save(UserRequest userRequest) {
@@ -44,6 +48,9 @@ public class UserServiceImpl implements UserService {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException(userId);
         }
+
+        projectMemberRepository.deleteByUserId(userId);
+        projectRepository.deleteByUserId(userId);
 
         userRepository.delete(new User(userId));
     }

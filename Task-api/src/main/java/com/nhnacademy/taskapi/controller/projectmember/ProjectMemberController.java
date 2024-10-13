@@ -21,9 +21,10 @@ public class ProjectMemberController {
     private final ProjectMemberService projectMemberService;
 
     @PostMapping("/projects/users")
-    public ResponseEntity<ProjectMemberDto> addProjectMember(@RequestBody ProjectMemberRequest projectMemberRequest) {
+    public ResponseEntity<ProjectMemberDto> addProjectMember(@RequestBody ProjectMemberRequest projectMemberRequest,
+                                                             @RequestHeader("X-USER-ID") String userId) {
         ProjectMemberDto projectMemberDto = projectMemberService.addMemberToProject(
-                projectMemberRequest.getOwnerId(),
+                userId,
                 projectMemberRequest.getProjectId(),
                 projectMemberRequest.getUserId());
 

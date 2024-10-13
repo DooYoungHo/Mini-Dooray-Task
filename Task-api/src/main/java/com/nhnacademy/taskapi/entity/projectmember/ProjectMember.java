@@ -16,6 +16,7 @@ public class ProjectMember {
 
     @Id
     @Column(name = "project_member_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long projectMemberId;
 
     @ManyToOne(fetch = FetchType.EAGER)

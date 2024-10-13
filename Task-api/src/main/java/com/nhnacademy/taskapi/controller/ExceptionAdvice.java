@@ -1,6 +1,7 @@
 package com.nhnacademy.taskapi.controller;
 
 import com.nhnacademy.taskapi.error.AlreadyExistException;
+import com.nhnacademy.taskapi.error.ForbiddenException;
 import com.nhnacademy.taskapi.error.NotFoundException;
 import com.nhnacademy.taskapi.error.milestone.InvalidDateRangeException;
 import com.nhnacademy.taskapi.error.projectmember.ProjectCreatorOnlyException;
@@ -36,7 +37,7 @@ public class ExceptionAdvice {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-    @ExceptionHandler({ProjectCreatorOnlyException.class})
+    @ExceptionHandler({ForbiddenException.class})
     public ResponseEntity<Map<String, Object>> projectCreatorExceptionHandler(ProjectCreatorOnlyException pe) {
         Map<String, Object> response = new HashMap<>();
 

@@ -32,8 +32,9 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")       /* 특정 프로젝트 생성 */
-    public ResponseEntity<Project> createProject(@RequestBody ProjectRequest projectRequest) {
-        Project project = projectService.create(projectRequest.getTitle(), projectRequest.getStatus(), projectRequest.getUserId());
+    public ResponseEntity<Project> createProject(@RequestBody ProjectRequest projectRequest,
+                                                 @RequestHeader("X-USER-ID") String userId) {
+        Project project = projectService.create(projectRequest.getTitle(), projectRequest.getStatus(), userId);
         return ResponseEntity.ok(project);
     }
 
@@ -42,21 +43,23 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getProjectById(id));
     }
 
-    @GetMapping("/projects/user/{userId}") /* 특정 유저가 만든 프로젝트 목록 조회 */
-    public ResponseEntity<List<Project>> getProjectsByUserId(@PathVariable("userId") String userId) {
+    @GetMapping("/projects/user") /* 특정 유저가 만든 프로젝트 목록 조회 */
+    public ResponseEntity<List<Project>> getProjectsByUserId(@RequestHeader("X-USER-ID") String userId) {
         return ResponseEntity.ok(projectService.getProjectsByUserId(userId));
     }
 
     @DeleteMapping("/projects/{projectId}") /* 프로젝트 삭제 */
-    public ResponseEntity<?> deleteProject(@PathVariable("projectId") Long projectId) {
-        projectService.delete(projectId);
+    public ResponseEntity<?> deleteProject(@PathVariable("projectId") Long projectId,
+                                           @RequestHeader("X-USER-ID") String userId) {
+        projectService.delete(projectId, userId);
         return ResponseEntity.ok(null);
     }
 
     @PutMapping("/projects/{projectId}")    /* 프로젝트 업데이트 */
     public ResponseEntity<?> updateProject(@PathVariable("projectId") Long projectId,
+                                           @RequestHeader("X-USER-ID") String userId,
                                            @RequestBody ProjectRequest projectRequest) {
-        projectService.update(projectId, projectRequest.getTitle(), projectRequest.getStatus(), projectRequest.getUserId());
+        projectService.update(projectId, projectRequest.getTitle(), projectRequest.getStatus(), userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 }

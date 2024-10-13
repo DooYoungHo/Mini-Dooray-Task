@@ -33,7 +33,7 @@ public interface ProjectService {
 
     Project create(String title, ProjectStatus projectStatus, String userId);
 
-    void delete(Long projectId);
+    void delete(Long projectId, String userId);
 
     void update(Long projectId, String title, ProjectStatus status, String userId);
 

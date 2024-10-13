@@ -6,8 +6,9 @@ POST http://localhost:8080/api/users
 Content-Type: application/json
 
 {
-  "userId" : null
+  "userId" : "jungGyu"
 }
 
 ### 유저 삭제하기
-DELETE http://localhost:8080/api/users/jungGyu
+DELETE http://localhost:8080/api/users
+X-USER-ID: jungGyu

@@ -7,6 +7,7 @@ import com.nhnacademy.taskapi.entity.user.User;
 import com.nhnacademy.taskapi.entity.project.dto.ProjectDto;
 import com.nhnacademy.taskapi.entity.user.dto.UserDto;
 import com.nhnacademy.taskapi.error.project.ProjectAlreadyExistsException;
+import com.nhnacademy.taskapi.error.project.ProjectNotCreatorException;
 import com.nhnacademy.taskapi.error.project.ProjectNotFoundException;
 import com.nhnacademy.taskapi.error.user.UserNotFoundException;
 import com.nhnacademy.taskapi.repository.project.ProjectRepository;
@@ -178,16 +179,23 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void delete(Long projectId) {
-        if (Objects.isNull(projectId) || projectId <= 0) {
-            throw new IllegalArgumentException("프로젝트 아이디 값이 올바르지 않습니다.");
+    public void delete(Long projectId, String userId) {
+        if (Objects.isNull(projectId) || projectId <= 0 || Objects.isNull(userId) || userId.isEmpty()) {
+            throw new IllegalArgumentException("올바르지 못한 값이 들어왔습니다.");
+
         }
         if (!projectRepository.existsById(projectId)) {
-            throw new ProjectNotFoundException();
+            throw new ProjectNotFoundException(projectId);
         }
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
+
+        projectMemberRepository.deleteByProjectId(project.getProjectId());
+
+        if (!project.getUser().getUserId().equalsIgnoreCase(userId)) {
+            throw new ProjectNotCreatorException("프로젝트 생성자가 아닙니다");
+        }
 
         project.setStatus(ProjectStatus.TERMINATED);
 
@@ -210,6 +218,14 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
+
+        if (project.getStatus().equals(ProjectStatus.TERMINATED)) {
+            throw new IllegalArgumentException("종료된 프로젝트 입니다.");
+        }
+
+        if (!project.getUser().getUserId().equalsIgnoreCase(userId)) {
+            throw new ProjectNotCreatorException("프로젝트 생성자가 아닙니다");
+        }
 
         project.setStatus(status);
         project.setTitle(title);

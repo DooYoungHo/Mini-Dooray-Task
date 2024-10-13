@@ -10,11 +10,9 @@ public class ProjectRequest {
 
     private String title;
     private ProjectStatus status;
-    private String userId;
 
-    public ProjectRequest(String title, Integer status, String userId) {
+    public ProjectRequest(String title, Integer status) {
         this.title = title;
         this.status = ProjectStatus.fromValue(status);
-        this.userId = userId;
     }
 }
